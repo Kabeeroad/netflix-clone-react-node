@@ -1,18 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import BackgroundImage from "../assets/home.jpg";
 import MovieLogo from '../assets/homeTitle.webp'
 import { FaPlay } from "react-icons/fa";
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMovies, } from "../store/index.js";
+import Slider from "../Components/Slider.jsx";
 
 const Netflix = () => {
+
   const [isScrolled, setIsScrolled] = useState(false);
+  const Navigate = useNavigate()
+  const genresLoaded = useSelector((state) => state.Netflix.genresLoaded)
+  const movies = useSelector((state) => state.Netflix.movies)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getGenres())
+  }, [])
+
+  useEffect(() => {
+    if (genresLoaded) dispatch(fetchMovies({ type: "all" }))
+  })
+
+
+
+
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
   };
+  console.log(movies)
   return (
     <Container>
       <Navbar isScrolled={isScrolled} />
@@ -27,7 +49,7 @@ const Netflix = () => {
             <img src={MovieLogo} alt="movieImage" />
           </div>
           <div className="buttons flex">
-            <button flex j-center a-center>
+            <button flex j-center a-center onClick={() => Navigate('/player')}>
               <FaPlay />Play
             </button>
             <button flex j-center a-center>
@@ -36,6 +58,7 @@ const Netflix = () => {
           </div>
         </div>
       </div>
+      <Slider movies={movies} />
     </Container>
   );
 };
@@ -69,6 +92,7 @@ const Container = styled.div`
 .buttons{
   margin: 5rem;
   gap: 2rem;
+
   button{
     font-size: 1.4rem;
     gap: 1rem;
@@ -76,7 +100,19 @@ const Container = styled.div`
     padding: 0.5rem;
     padding-left: 2rem;
     padding-right: 2.4;
-
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    &:hover{
+      opacity: 0.8;
+    }
+&:nth-of-type(2){
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white;
+}
+svg{
+  font-size:1.8rem;
+}
   }
 }
   }
