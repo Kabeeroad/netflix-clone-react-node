@@ -26,6 +26,7 @@ const Container = styled.div`
     .player{
         height: 100vh;
         width: 100vw;
+        color: white;
     }.back{
         position: relative;
         /* padding: 2rem; */
