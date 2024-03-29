@@ -50,15 +50,28 @@ const getRawData = async (api, genres, paging = false) => {
 };
 
 export const fetchDataByGenre = createAsyncThunk(
-  "netflix/genre",
+  "netflix/moviesByGenres",
   async ({ genre, type }, thunkAPI) => {
+    console.log("fetch data ", genre, type);
     const {
       netflix: { genres },
     } = thunkAPI.getState();
     return getRawData(
+      // `${TMDB_BASE_URL}/discover/${type}?api_key=${API_KEY}&with_genres=${genres}`,
       `https://api.themoviedb.org/3/discover/${type}?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&with_genres=${genre}`,
       genres
     );
+    console.log(data);
+    return data;
+  }
+);
+
+export const getUserLikedMovies = createAsyncThunk(
+  "netflix/getLiked",
+  async (email) => {
+    const {
+      data: { movie },
+    } = await axios.get(`http://localhost:5000/api/user/liked/${email}`);
   }
 );
 
@@ -91,7 +104,7 @@ export const removeMovieFromLiked = createAsyncThunk(
   async ({ movieId, email }) => {
     const {
       data: { movies },
-    } = await axios.put("http://localhost:5000/api/user/remove", {
+    } = await axios.put("http://localhost:5000/api/user/delete", {
       email,
       movieId,
     });

@@ -2,26 +2,26 @@ import React, { useRef, useState } from "react";
 import Card from "./Card";
 import styled from "styled-components";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-styled;
+
+
 const CardSlider = ({ data, title }) => {
+
     const [showControls, setShowControls] = useState(false);
     const [sliderPosition, setSliderPosition] = useState(0);
-
     const listRef = useRef();
-    const handledirection = (direction) => {
-        const distance = listRef.current.getBoundingClientReact().x - 70;
 
-        if (direction === 'left' && sliderPosition > 0) {
-            listRef.current.style.transform = `translatex(${230 + distance})`
-            setSliderPosition(sliderPosition - 1)
+    const handleDirection = (direction) => {
+        let distance = listRef.current.getBoundingClientRect().x - 70;
+        if (direction === "left" && sliderPosition > 0) {
+            listRef.current.style.transform = `translateX(${230 + distance}px)`;
+            setSliderPosition(sliderPosition - 1);
         }
-        if (direction === 'right' && sliderPosition > 4) {
-            listRef.current.style.transform = `translatex(${-230 + distance})`
-            setSliderPosition(sliderPosition + 1)
+        if (direction === "right" && sliderPosition < 4) {
+            listRef.current.style.transform = `translateX(${-230 + distance}px)`;
+            setSliderPosition(sliderPosition + 1);
         }
-
-
     };
+
     return (
         <Container
             className="flex column "
@@ -32,7 +32,7 @@ const CardSlider = ({ data, title }) => {
             <div className="wrapper">
                 <div className={`slider-act
                 ion left ${!showControls ? "none" : ""}`}>
-                    <AiOutlineLeft onClick={() => handledirection("left")} />
+                    <AiOutlineLeft onClick={() => handleDirection("left")} />
                 </div>
                 <div className="flex slider " ref={listRef}>
                     {data.map((movie, index) => {
@@ -40,13 +40,13 @@ const CardSlider = ({ data, title }) => {
                     })}
                 </div>
                 <div className={`slider-action right ${!showControls ? "none" : ''} flex j-center a-center`}>
-                    <AiOutlineRight onClick={() => handledirection("right")} />
+                    <AiOutlineRight onClick={() => handleDirection("right")} />
                 </div>
             </div>
 
         </Container>
     );
-};
+}
 
 export default CardSlider;
 
